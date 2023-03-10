@@ -23,17 +23,29 @@ def NewUser():
 def Menu():
     print()
     print('Выберите действие:', 'Показать базу зарегистророванных пользователей - Введите цифру "1"', 'Зарегистрироваться - Введите цифру "2"', 'Завершить работу - Введите цифру "3"', sep = '\n')
-    return(input())
+    return input()
+
+def NewPassword():
+    login = input('Введите логин: ')
+    if login not in data_base:
+        print ('Такого пользователя не существует')
+        return NewPassword()
+    password = input('Введите пароль: ')
+    if password != data_base[login]:
+        while password != data_base[login]:
+            password = input('Вве')
+
 
 flag = True
 while flag == True:
     res = Menu()
     if res == 1:
         ShowDB()
+        flag = False
     if res == 2:
         NewUser()
+        flag = False
     if res == 3:
         print('До свидания')
         flag = False
-        print(123)
         break
