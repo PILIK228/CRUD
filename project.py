@@ -47,5 +47,6 @@ while flag == True:
         flag = False
     if res == 3:
         print('До свидания')
+        print()
         flag = False
         break
