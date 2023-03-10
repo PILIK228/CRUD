@@ -1,3 +1,9 @@
+# доделать функцию обновления пароля
+# пароли храним в хеше (алгоритм md5)
+# словарь с данными пользоветеля храним в файле
+# ф-ии возвращают строки
+# +20 задач
+
 data_base = {'dimka39':'1234fs',
         'lana_rhoades':'fwsfwefg',
         'jojo':'qwerty',
@@ -27,6 +33,8 @@ def Menu():
 
 def NewPassword():
     login = input('Введите логин: ')
+
+    # использовать get
     if login not in data_base:
         print ('Такого пользователя не существует')
         return NewPassword()
