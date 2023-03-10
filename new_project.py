@@ -1,0 +1,2 @@
+def fixr():
+  print('Hello')
