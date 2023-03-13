@@ -1,38 +1,95 @@
-# from hashlib import md5
-# with open('database.txt', 'a') as fileinp:
-#     for i in range(5):
-#         lg = input()
-#         pw = str(md5(input().encode()).hexdigest())
-#         print(lg, pw, file = fileinp)
-def DB_read():
-    with open('database.txt', 'r', encoding='utf-8') as text_dict:
-        text_dict = text_dict.readlines()
-        global user
-        user = []
-        for i in text_dict:
-            user.append(i.split())
-        print(user)
-        pass
+from hashlib import md5
+def to_md5(pw): #шифровщик
+    return str(md5(pw.encode()).hexdigest())
 
-def DB_init():
-    with open('database.txt', 'r', encoding='utf-8') as text_dict:
-        text_dict = text_dict.readlines()
-        global DB
-        DB = {}
-        for i in text_dict:
-            i = i.split()
-            k = i[0]
-            v = i[1]
-            v = v.strip()
-            DB[k] = v
-        print(DB)
-def DB_c():
-  with open('database.txt', 'w', encoding='utf-8') as text_dict:
-            DB_list = DB.items()
-            for i in DB_list:
-              print(*i, file= text_dict)
+def GetAllUsers():
+    with open('database.txt', 'r', encoding='utf-8') as DataBase:
+        DataBase = DataBase.readlines()
+        AllUsers = []
+        for i in DataBase:
+            AllUsers.append(i.split())
+    return AllUsers
+#print(GetAllUsers())
 
-DB_init()
-DB['koka']= 'kkkkk'
-DB_c()
-DB_init()
+def GetUser():
+    with open('database.txt', 'r', encoding='utf-8') as DataBase:
+        DataBase = DataBase.readlines()
+        AllUsers = []
+        for i in DataBase:
+            AllUsers.append(i.split())
+    login = input('Для получения данных введите логин пользователя: ')
+    flag = False
+    for i in AllUsers:
+        if i[0] == login:
+            flag = True
+            return print('Логин: {0}, Пароль: {1}'.format(i[0],i[1]))
+            break
+    if flag == False:
+        return print('Указанный пользователь не существует. Введите данные повторно'), GetUser()
+#GetUser()
+        
+def UpdateUser():
+    with open('database.txt', 'r', encoding='utf-8') as DataBase:
+        DataBase = DataBase.readlines()
+        AllUsers = []
+        for i in DataBase:
+            AllUsers.append(i.split())
+    login = input('Для изменения данных введите логин пользователя: ')
+    flag = False
+    for i in AllUsers:
+        if i[0] == login:
+            pw = to_md5(input('Введите новый пароль: '))
+            flag = True
+            AllUsers.remove(i)
+            AllUsers.append([login, pw])
+            break
+    if flag == False:
+        return print('Указанный пользователь не существует. Введите данные повторно'), UpdateUser()
+    with open('database.txt', 'w', encoding='utf-8') as DataBase:
+        for i in AllUsers:
+            print(*i, file= DataBase)
+    return print('Данные успешно записаны')
+#UpdateUser()        
+
+def CreateUser():
+    with open('database.txt', 'r', encoding='utf-8') as DataBase:
+        DataBase = DataBase.readlines()
+        AllUsers = []
+        for i in DataBase:
+            AllUsers.append(i.split())
+    login = input('Введите логин: ')
+    flag = False
+    for i in AllUsers:
+        if i[0] == login:
+            flag = True
+            return print('Указанный логин уже существует. Введите данные повторно'), CreateUser()
+            break
+    if flag == False:
+        pw = to_md5(input('Введите пароль: '))
+        AllUsers.append([login, pw])
+    with open('database.txt', 'w', encoding='utf-8') as DataBase:
+        for i in AllUsers:
+            print(*i, file= DataBase)
+    return print('Данные успешно записаны')
+#CreateUser()
+
+def DeleteUser():
+    with open('database.txt', 'r', encoding='utf-8') as DataBase:
+        DataBase = DataBase.readlines()
+        AllUsers = []
+        for i in DataBase:
+            AllUsers.append(i.split())
+    login = input('Для удаления данных введите логин пользователя: ')
+    flag = False
+    for i in AllUsers:
+        if i[0] == login:
+            flag = True
+            AllUsers.remove(i)
+            break
+    if flag == False:
+        return print('Указанный пользователь не существует. Введите данные повторно'), UpdateUser()
+    with open('database.txt', 'w', encoding='utf-8') as DataBase:
+        for i in AllUsers:
+            print(*i, file= DataBase)
+    return print('Данные успешно удалены')
+#DeleteUser()
