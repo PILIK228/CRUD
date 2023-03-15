@@ -1,11 +1,31 @@
 from hashlib import md5
 import json
+import time
+
+
+# любая ф-я может возвращать 3 вещи:
+# 1. "ОК"
+# 2. "Ошибка"
+# 3. Данные
+
+# GetAllUsers()
+# GetAllSortedUsers()
+# input: -
+# output: [[login, pas, ....], [login, pas, ....], ...]
+
+
+# GetUser()
+# input: login
+# output: [login, pas, ....]
+
+# Остальные ф-ии по аналогии
+
+# Адаптировать код под LoadBase()
+
 
 DATABASE = 'new_base.json' #json файл с данными
 
 def benchmark(func): #decorator
-    import time
-
     def wrapper():
         start = time.time()
         func()
@@ -13,34 +33,30 @@ def benchmark(func): #decorator
         print('[*] Время выполнения: {} секунд.'.format(end-start))
     return wrapper
 
-    def wrapped(*args):
-        start_time = time.perf_counter_ns()
-        res = function(*args)
-        print(time.perf_counter_ns() - start_time)
-        return res
-    return wrapped
 
 def to_md5(pw): #шифровщик
     return str(md5(pw.encode()).hexdigest())
 
 def LoadBase(): #подгрузка базы
     with open('new_base.json') as DB:
-      data = json.load(DB) 
+      return json.load(DB) 
 #LoadBase()
 
 def DumpBase(db): #запись обновленного словаря в файл
-  with open(DATABASE, 'w') as DB:
-    json.dump(db, DB, indent=3)
+    with open(DATABASE, 'w') as DB:
+        json.dump(db, DB, indent=3)
+    return "OK"
 
 def GetAllUsers():
-    with open(DATABASE) as DB:
-      data = json.load(DB)
+      data = LoadBase()
+      l = list()
       for i in data['users']:
         for k in i:
             print(k,':', i[k])
         print() 
 #GetAllUsers()
 
+@benchmark
 def GetAllSortedUsers(): #добавлена сортировка
     with open(DATABASE) as DB:
       data = json.load(DB)
@@ -53,7 +69,7 @@ def GetAllSortedUsers(): #добавлена сортировка
 
 def GetUser(login):
     with open(DATABASE) as DB:
-      data = json.load(DB)
+        data = json.load(DB)
     for i in data['users']:
         if i['login'] == login:
           for k in i:
@@ -64,7 +80,7 @@ def GetUser(login):
         
 def UpdateUser(login, password):
     with open(DATABASE) as DB:
-      data = json.load(DB)
+        data = json.load(DB)
     for i in data['users']:
         if i['login'] == login:
             i['password'] = to_md5(password)
@@ -111,7 +127,10 @@ while True:
     if res == '1':
         GetAllUsers()
     if res == '2':
-        print(GetUser(input('Введите логин: ')))
+        # !!!!
+        print('Введите логин: ')
+        login = input()
+        print(GetUser(login))
     if res == '3':
         print(CreateUser(input('Логин: '), input('Пароль: '), input('Имя: '), input('Возраст: ')))
     if res == '4':
