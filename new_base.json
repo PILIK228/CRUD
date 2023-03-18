@@ -1,40 +1,14 @@
 {
-   "users": [
-      {
-         "login": "diablo2435",
-         "password": "fa7f08233358e9b466effa1328168527",
-         "name": "\u041a\u0438\u0440\u0438\u043b\u043b",
-         "age": 23
+   "users": "123",
+   "ke": 
+   {
+      "password": {
+            "password": "fa7f08233358e9b466effa1328168527",
+            "name": "\u041a\u0438\u0440\u0438\u043b\u043b",
+            "age": "23"
       },
-      {
-         "login": "Pidaras",
-         "password": "j1928319283918ud1j",
-         "name": "\u0421\u0442\u0430\u0441",
-         "age": 24
-      },
-      {
-         "login": "jane101",
-         "password": "d8578edf8458ce06fbc5bb76a58c5ca4",
-         "name": "\u0414\u0436\u0430\u043d\u0435",
-         "age": 49
-      },
-      {
-         "login": "s0k0l",
-         "password": "8ca66bb49b9b327069fe134e9978d6fd",
-         "name": "\u0414\u043e\u043a\u0430",
-         "age": 24
-      },
-      {
-         "login": "lizz",
-         "password": "07f1fba52a71cf64f73684fd3d5469e9",
-         "name": "\u041b\u0451\u043b\u0438\u043a",
-         "age": 24
-      },
-      {
-         "login": "popik",
-         "password": "827ccb0eea8a706c4c34a16891f84e7b",
-         "name": "\u043a\u0430\u043f\u0438\u0431\u0430\u0440\u0430",
-         "age": 22
-      }
-   ]
+      "name": "\u041a\u0438\u0440\u0438\u043b\u043b",
+      "age": "23"
+   },
+   "users1": "123"
 }
