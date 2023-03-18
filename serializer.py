@@ -10,22 +10,23 @@ def CreateDict(index):
     d = dict()
     global i
     for _ in range(index+1, len(m)):
+        i += 1
         s = str(m[i].strip())
-        if s == "{" or s == "}":
-            i += 1
+        if s == "{" or s == "},":
+            # i += 1
             continue
         ind = s.find('"', 1)
         key = s[1:ind]
         if s.endswith(":"): 
             d[key]= CreateDict(i)
-            i += 1
+            # i += 1
             continue
         if s.endswith(","):     
             value = s[ind+4: -2]
             d[key] = value
-            i += 1
+            # i += 1
         else:
-            i += 1
+            # i += 1
             value = s[ind+4: -1]
             d[key] = value
             return d
