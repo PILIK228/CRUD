@@ -2,27 +2,6 @@ from hashlib import md5
 import json
 import time
 
-
-# любая ф-я может возвращать 3 вещи:
-# 1. "ОК"
-# 2. "Ошибка"
-# 3. Данные
-
-# GetAllUsers()
-# GetAllSortedUsers()
-# input: -
-# output: [[login, pas, ....], [login, pas, ....], ...]
-
-
-# GetUser()
-# input: login
-# output: [login, pas, ....]
-
-# Остальные ф-ии по аналогии
-
-# Адаптировать код под LoadBase()
-
-
 DATABASE = 'new_base.json' #json файл с данными
 
 def benchmark(func): #decorator
@@ -33,14 +12,12 @@ def benchmark(func): #decorator
         print('[*] Время выполнения: {} секунд.'.format(end-start))
     return wrapper
 
-
 def to_md5(pw): #шифровщик
     return str(md5(pw.encode()).hexdigest())
 
 def LoadBase(): #подгрузка базы
-    with open('new_base.json') as DB:
+    with open(DATABASE) as DB:
       return json.load(DB) 
-#LoadBase()
 
 def DumpBase(db): #запись обновленного словаря в файл
     with open(DATABASE, 'w') as DB:
@@ -49,52 +26,37 @@ def DumpBase(db): #запись обновленного словаря в фа�
 
 def GetAllUsers():
       data = LoadBase()
-      l = list()
-      for i in data['users']:
-        for k in i:
-            print(k,':', i[k])
-        print() 
+      return data['users']
 #GetAllUsers()
 
-@benchmark
 def GetAllSortedUsers(): #добавлена сортировка
-    with open(DATABASE) as DB:
-      data = json.load(DB)
-      for i in sorted(data['users'], key=lambda user: (user['age'], user['name'])): #сортировка по возрасту и имени
-        for k in i:
-            print(k,':', i[k])
-        print() 
-      return
+      data = LoadBase()
+      return sorted(data['users'], key=lambda user: (user['age'], user['name']))
 #GetAllSortedUsers()
 
 def GetUser(login):
-    with open(DATABASE) as DB:
-        data = json.load(DB)
-    for i in data['users']:
+      data = LoadBase()
+      for i in data['users']:
         if i['login'] == login:
-          for k in i:
-              print(k,':', i[k])
-          return ' '
-    return 'Указанный пользователь не существует. Введите данные повторно'
+          return i
+      return 'ОШИБКА'
 #print(GetUser(input('Введите логин: ')))
         
 def UpdateUser(login, password):
-    with open(DATABASE) as DB:
-        data = json.load(DB)
-    for i in data['users']:
+      data = LoadBase()
+      for i in data['users']:
         if i['login'] == login:
             i['password'] = to_md5(password)
             DumpBase(data)
-            return 'Данные успешно записаны'
-    return 'Указанный пользователь не существует. Введите данные повторно'
+            return 'ОК'
+      return 'ОШИБКА'
 #print(UpdateUser(input('Логин: '), input('Новый пароль: ')))      
 
 def CreateUser(login, password, name, age):
-    with open(DATABASE) as DB:
-      data = json.load(DB) 
+    data = LoadBase() 
     for i in data['users']:
         if i['login'] == login:
-            return 'Указанный пользователь уже существует. Введите данные повторно'
+            return 'ОШИБКА'
     du = {}
     l = data['users']
     du['login'] = login
@@ -104,18 +66,17 @@ def CreateUser(login, password, name, age):
     l.append(du)
     data['users'] = l
     DumpBase(data)
-    return 'Данные успешно записаны'
+    return 'ОК'
 #print(CreateUser(input('Логин: '), input('Пароль: '), input('Имя: '), input('Возраст: ')))
 
 def DeleteUser(login):
-    with open(DATABASE) as DB:
-      data = json.load(DB)
+    data = LoadBase()
     for i in range(len(data['users'])):
         if data['users'][i]['login'] == login:
             del data['users'][i]
             DumpBase(data)
-            return 'Данные успешно записаны'
-    return 'Указанный пользователь не существует. Введите данные повторно'
+            return 'ОК'
+    return 'ОШИБКА'
 #print(DeleteUser(input('Логин: ')))
 
 def Menu(): #вывод меню
@@ -125,18 +86,31 @@ def Menu(): #вывод меню
 while True:
     res = Menu()
     if res == '1':
-        GetAllUsers()
+        print(GetAllUsers())
     if res == '2':
-        # !!!!
         print('Введите логин: ')
         login = input()
         print(GetUser(login))
     if res == '3':
-        print(CreateUser(input('Логин: '), input('Пароль: '), input('Имя: '), input('Возраст: ')))
+        print('Введите логин')
+        login = input()
+        print('Введите пароль')
+        password = input()
+        print('Введите имя')
+        name = input()
+        print('Введите возраст')
+        age = input()
+        print(CreateUser(login, password, name, age))
     if res == '4':
-        print(UpdateUser(input('Логин: '), input('Новый пароль: '))) 
+        print('Введите логин')
+        login = input()
+        print('Введите новый пароль')
+        password = input()
+        print(UpdateUser(login, password)) 
     if res == '5':
-        print(DeleteUser(input('Логин: ')))    
+        print('Введите логин')
+        login = input()
+        print(DeleteUser(login))    
     if res == '6':     
         print('До свидания')
         break
