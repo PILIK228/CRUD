@@ -9,7 +9,7 @@ def GetAllUsers():
         for i in DataBase:
             AllUsers.append(i.split())
     return AllUsers
-#print(GetAllUsers())
+#print(GetAllUsers()
 
 def GetUser():
     with open('database.txt', 'r', encoding='utf-8') as DataBase:
@@ -92,4 +92,4 @@ def DeleteUser():
         for i in AllUsers:
             print(*i, file= DataBase)
     return print('Данные успешно удалены')
-#DeleteUser()
+
