@@ -12,3 +12,4 @@ This project is presented in educational purposes and shows my abilities with CR
 * Docker
 * PostgreSQL
 ## Setup
+Setup instruction described personally in each branch
